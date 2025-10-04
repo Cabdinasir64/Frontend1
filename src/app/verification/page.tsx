@@ -144,9 +144,9 @@ export default function Verification() {
                 <button
                     onClick={handleResend}
                     className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition"
-                    disabled={resendLoading}
+                    disabled={timeLeft > 0 || resendLoading}
                 >
-                    {resendLoading ? "Sending..." : "Resend Code"}
+                    {resendLoading ? "Sending..." : timeLeft > 0 ? `Resend available in ${minutes}:${seconds.toString().padStart(2, "0")}` : "Resend Code"}
                 </button>
 
                 <AnimatePresence>
