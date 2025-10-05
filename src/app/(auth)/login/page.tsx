@@ -45,7 +45,15 @@ export default function Login() {
       } else {
         setSuccess("Login successful! Redirecting...");
         localStorage.setItem("token", data.token);
-        setTimeout(() => router.push("/dashboard"), 1500);
+         setTimeout(() => {
+        if (data.user.role === "admin") {
+          router.push("/admin/dashboard");
+        } else if (data.user.role === "user") {
+          router.push("/user/dashboard"); 
+        } else {
+          router.push("/dashboard"); 
+        }
+      }, 1500);
       }
     } catch (err) {
       setErrors(["Network error. Please try again."]);
