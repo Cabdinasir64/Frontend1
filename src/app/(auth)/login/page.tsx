@@ -34,7 +34,7 @@ export default function Login() {
 
       if (!res.ok) {
         if (data.error && data.error.includes("not verified")) {
-          setErrors(["Your account is not verified. Please check your email."]);
+          setErrors(["Your account is not verified. Please verified your email."]);
           setTimeout(() => {
             router.push(`/verification?email=${encodeURIComponent(formData.email)}`);
           }, 2000);
