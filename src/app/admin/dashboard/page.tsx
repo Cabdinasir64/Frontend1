@@ -33,12 +33,12 @@ export default function AdminDashboard() {
                     },
                 });
 
-                if (!res.ok) throw new Error("Failed to fetch user");
+                if (!res.ok) throw new Error("You can't access without login");
 
                 const data = await res.json();
                 setUser(data.user);
             } catch (err) {
-                console.error("Error fetching user data:", err);
+                alert(err)
                 router.push("/login");
             }
         };
