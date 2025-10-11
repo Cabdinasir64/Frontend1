@@ -28,6 +28,7 @@ export default function Login() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
+        credentials: "include",
       });
 
       const data = await res.json();
@@ -44,15 +45,8 @@ export default function Login() {
         else if (data.errors) setErrors(data.errors);
       } else {
         setSuccess("Login successful! Redirecting...");
-        localStorage.setItem("token", data.token);
         setTimeout(() => {
-          if (data.user.role === "admin") {
-            router.push("/admin/dashboard");
-          } else if (data.user.role === "user") {
-            router.push("/user/dashboard");
-          } else {
-            router.push("/dashboard");
-          }
+          router.push(data.user.redirect);
         }, 1500);
       }
     } catch (err) {
