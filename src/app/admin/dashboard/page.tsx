@@ -19,24 +19,23 @@ export default function AdminDashboard() {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const token = localStorage.getItem("token");
-            if (!token) {
-                router.push("/login");
-                return;
-            }
-
             try {
                 const res = await fetch("http://localhost:8000/api/users2/me", {
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
                     },
+                    credentials: "include"
                 });
 
                 if (!res.ok) throw new Error("You can't access without login");
 
                 const data = await res.json();
                 setUser(data.user);
+
+                if (!res.ok || data.user.role !== "admin") {
+                    router.push("/login");
+                }
+
             } catch (err) {
                 alert(err)
                 router.push("/login");
@@ -46,9 +45,22 @@ export default function AdminDashboard() {
         fetchUser();
     }, [router]);
 
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        router.push("/");
+    const handleLogout = async () => {
+        try {
+            const res = await fetch("http://localhost:8000/api/users2/logout", {
+                method: "POST",
+                credentials: "include",
+            });
+
+            if (res.ok) {
+                router.push("/login");
+            } else {
+                alert("Logout failed");
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Network error");
+        }
     };
 
     return (
